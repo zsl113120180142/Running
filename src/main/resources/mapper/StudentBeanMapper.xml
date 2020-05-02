@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.running.dao.StudentBeanMapper">
+  <resultMap id="BaseResultMap" type="com.running.bean.StudentBean">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="clid" jdbcType="INTEGER" property="clid" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="snum" jdbcType="VARCHAR" property="snum" />
+    <result column="inclass" jdbcType="INTEGER" property="inclass" />
+    <result column="spe" jdbcType="INTEGER" property="spe" />
+    <result column="srun" jdbcType="INTEGER" property="srun" />
+    <result column="sresult" jdbcType="INTEGER" property="sresult" />
+    <result column="spicture" jdbcType="VARCHAR" property="spicture" />
+    <result column="spassword" jdbcType="VARCHAR" property="spassword" />
+    <result column="snt" jdbcType="INTEGER" property="snt" />
+    <result column="sdelete" jdbcType="INTEGER" property="sdelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sid, sname, clid, sex, snum, inclass, spe, srun, sresult, spicture, spassword, snt, 
+    sdelete
+  </sql>
+  <select id="selectByExample" parameterType="com.running.bean.StudentBeanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from r_student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from r_student
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from r_student
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.running.bean.StudentBeanExample">
+    delete from r_student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.running.bean.StudentBean">
+    insert into r_student (sid, sname, clid, 
+      sex, snum, inclass, 
+      spe, srun, sresult, 
+      spicture, spassword, snt, 
+      sdelete)
+    values (#{sid,jdbcType=INTEGER}, #{sname,jdbcType=VARCHAR}, #{clid,jdbcType=INTEGER}, 
+      #{sex,jdbcType=VARCHAR}, #{snum,jdbcType=VARCHAR}, #{inclass,jdbcType=INTEGER}, 
+      #{spe,jdbcType=INTEGER}, #{srun,jdbcType=INTEGER}, #{sresult,jdbcType=INTEGER}, 
+      #{spicture,jdbcType=VARCHAR}, #{spassword,jdbcType=VARCHAR}, #{snt,jdbcType=INTEGER}, 
+      #{sdelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.running.bean.StudentBean">
+    insert into r_student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="sname != null">
+        sname,
+      </if>
+      <if test="clid != null">
+        clid,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="snum != null">
+        snum,
+      </if>
+      <if test="inclass != null">
+        inclass,
+      </if>
+      <if test="spe != null">
+        spe,
+      </if>
+      <if test="srun != null">
+        srun,
+      </if>
+      <if test="sresult != null">
+        sresult,
+      </if>
+      <if test="spicture != null">
+        spicture,
+      </if>
+      <if test="spassword != null">
+        spassword,
+      </if>
+      <if test="snt != null">
+        snt,
+      </if>
+      <if test="sdelete != null">
+        sdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="clid != null">
+        #{clid,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="snum != null">
+        #{snum,jdbcType=VARCHAR},
+      </if>
+      <if test="inclass != null">
+        #{inclass,jdbcType=INTEGER},
+      </if>
+      <if test="spe != null">
+        #{spe,jdbcType=INTEGER},
+      </if>
+      <if test="srun != null">
+        #{srun,jdbcType=INTEGER},
+      </if>
+      <if test="sresult != null">
+        #{sresult,jdbcType=INTEGER},
+      </if>
+      <if test="spicture != null">
+        #{spicture,jdbcType=VARCHAR},
+      </if>
+      <if test="spassword != null">
+        #{spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="snt != null">
+        #{snt,jdbcType=INTEGER},
+      </if>
+      <if test="sdelete != null">
+        #{sdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.running.bean.StudentBeanExample" resultType="java.lang.Long">
+    select count(*) from r_student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update r_student
+    <set>
+      <if test="record.sid != null">
+        sid = #{record.sid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sname != null">
+        sname = #{record.sname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clid != null">
+        clid = #{record.clid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.snum != null">
+        snum = #{record.snum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inclass != null">
+        inclass = #{record.inclass,jdbcType=INTEGER},
+      </if>
+      <if test="record.spe != null">
+        spe = #{record.spe,jdbcType=INTEGER},
+      </if>
+      <if test="record.srun != null">
+        srun = #{record.srun,jdbcType=INTEGER},
+      </if>
+      <if test="record.sresult != null">
+        sresult = #{record.sresult,jdbcType=INTEGER},
+      </if>
+      <if test="record.spicture != null">
+        spicture = #{record.spicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spassword != null">
+        spassword = #{record.spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.snt != null">
+        snt = #{record.snt,jdbcType=INTEGER},
+      </if>
+      <if test="record.sdelete != null">
+        sdelete = #{record.sdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update r_student
+    set sid = #{record.sid,jdbcType=INTEGER},
+      sname = #{record.sname,jdbcType=VARCHAR},
+      clid = #{record.clid,jdbcType=INTEGER},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      snum = #{record.snum,jdbcType=VARCHAR},
+      inclass = #{record.inclass,jdbcType=INTEGER},
+      spe = #{record.spe,jdbcType=INTEGER},
+      srun = #{record.srun,jdbcType=INTEGER},
+      sresult = #{record.sresult,jdbcType=INTEGER},
+      spicture = #{record.spicture,jdbcType=VARCHAR},
+      spassword = #{record.spassword,jdbcType=VARCHAR},
+      snt = #{record.snt,jdbcType=INTEGER},
+      sdelete = #{record.sdelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.StudentBean">
+    update r_student
+    <set>
+      <if test="sname != null">
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="clid != null">
+        clid = #{clid,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="snum != null">
+        snum = #{snum,jdbcType=VARCHAR},
+      </if>
+      <if test="inclass != null">
+        inclass = #{inclass,jdbcType=INTEGER},
+      </if>
+      <if test="spe != null">
+        spe = #{spe,jdbcType=INTEGER},
+      </if>
+      <if test="srun != null">
+        srun = #{srun,jdbcType=INTEGER},
+      </if>
+      <if test="sresult != null">
+        sresult = #{sresult,jdbcType=INTEGER},
+      </if>
+      <if test="spicture != null">
+        spicture = #{spicture,jdbcType=VARCHAR},
+      </if>
+      <if test="spassword != null">
+        spassword = #{spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="snt != null">
+        snt = #{snt,jdbcType=INTEGER},
+      </if>
+      <if test="sdelete != null">
+        sdelete = #{sdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.running.bean.StudentBean">
+    update r_student
+    set sname = #{sname,jdbcType=VARCHAR},
+      clid = #{clid,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=VARCHAR},
+      snum = #{snum,jdbcType=VARCHAR},
+      inclass = #{inclass,jdbcType=INTEGER},
+      spe = #{spe,jdbcType=INTEGER},
+      srun = #{srun,jdbcType=INTEGER},
+      sresult = #{sresult,jdbcType=INTEGER},
+      spicture = #{spicture,jdbcType=VARCHAR},
+      spassword = #{spassword,jdbcType=VARCHAR},
+      snt = #{snt,jdbcType=INTEGER},
+      sdelete = #{sdelete,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+</mapper>

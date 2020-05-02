@@ -1,0 +1,51 @@
+package com.running.service;
+
+import com.running.bean.*;
+import com.running.dao.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 处理后台页面请求
+ */
+@Service
+public class HomeService {
+
+    @Autowired
+    CollegeBeanMapper collegeBeanMapper;
+    @Autowired
+    GradeBeanMapper gradeBeanMapper;
+    @Autowired
+    ClassesBeanMapper classesBeanMapper;
+    @Autowired
+    SemesterBeanMapper semesterBeanMapper;
+    @Autowired
+    WeekBeanMapper weekBeanMapper;
+
+
+
+    /**
+     * 三维数组
+     * 显示学院，年级，班级
+     */
+    public List<CollegeBean> getschool() {
+        return collegeBeanMapper.selectByExample(null);
+    }
+
+    public List<GradeBean> findByCid(Integer cid) {
+        return gradeBeanMapper.selectByCid(cid);
+    }
+
+    public List<ClassesBean> findByGid(Integer gid) {
+        return classesBeanMapper.selectByGid(gid);
+    }
+
+    public List<SemesterBean> getWeek() {
+        return semesterBeanMapper.selectByExample(null);
+    }
+    public  List<WeekBean> findBySe(Integer seid) {
+        return weekBeanMapper.selectBySeid(seid);
+    }
+}

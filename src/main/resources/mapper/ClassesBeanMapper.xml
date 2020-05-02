@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.running.dao.ClassesBeanMapper">
+  <resultMap id="BaseResultMap" type="com.running.bean.ClassesBean">
+    <id column="clid" jdbcType="INTEGER" property="clid" />
+    <result column="clname" jdbcType="VARCHAR" property="clname" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="cldelete" jdbcType="INTEGER" property="cldelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    clid, clname, gid, cldelete
+  </sql>
+  <select id="selectByExample" parameterType="com.running.bean.ClassesBeanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from r_classes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from r_classes
+    where clid = #{clid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByGid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from r_classes
+    where gid = #{gid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from r_classes
+    where clid = #{clid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.running.bean.ClassesBeanExample">
+    delete from r_classes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.running.bean.ClassesBean">
+    insert into r_classes (clid, clname, gid, 
+      cldelete)
+    values (#{clid,jdbcType=INTEGER}, #{clname,jdbcType=VARCHAR}, #{gid,jdbcType=INTEGER}, 
+      #{cldelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.running.bean.ClassesBean">
+    insert into r_classes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clid != null">
+        clid,
+      </if>
+      <if test="clname != null">
+        clname,
+      </if>
+      <if test="gid != null">
+        gid,
+      </if>
+      <if test="cldelete != null">
+        cldelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clid != null">
+        #{clid,jdbcType=INTEGER},
+      </if>
+      <if test="clname != null">
+        #{clname,jdbcType=VARCHAR},
+      </if>
+      <if test="gid != null">
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="cldelete != null">
+        #{cldelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.running.bean.ClassesBeanExample" resultType="java.lang.Long">
+    select count(*) from r_classes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update r_classes
+    <set>
+      <if test="record.clid != null">
+        clid = #{record.clid,jdbcType=INTEGER},
+      </if>
+      <if test="record.clname != null">
+        clname = #{record.clname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gid != null">
+        gid = #{record.gid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cldelete != null">
+        cldelete = #{record.cldelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update r_classes
+    set clid = #{record.clid,jdbcType=INTEGER},
+      clname = #{record.clname,jdbcType=VARCHAR},
+      gid = #{record.gid,jdbcType=INTEGER},
+      cldelete = #{record.cldelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.ClassesBean">
+    update r_classes
+    <set>
+      <if test="clname != null">
+        clname = #{clname,jdbcType=VARCHAR},
+      </if>
+      <if test="gid != null">
+        gid = #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="cldelete != null">
+        cldelete = #{cldelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where clid = #{clid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.running.bean.ClassesBean">
+    update r_classes
+    set clname = #{clname,jdbcType=VARCHAR},
+      gid = #{gid,jdbcType=INTEGER},
+      cldelete = #{cldelete,jdbcType=INTEGER}
+    where clid = #{clid,jdbcType=INTEGER}
+  </update>
+</mapper>
