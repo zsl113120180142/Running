@@ -7,8 +7,11 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="apicture" jdbcType="VARCHAR" property="apicture" />
+    <result column="aname" jdbcType="VARCHAR" property="aname" />
+    <result column="iden" jdbcType="VARCHAR" property="iden" />
+    <result column="works" jdbcType="INTEGER" property="works" />
   </resultMap>
-  <!--条件拼装语句-->
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -38,7 +41,6 @@
       </foreach>
     </where>
   </sql>
-
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -69,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    aid, username, password, phone, apicture
+    aid, username, password, phone, apicture, aname, iden, works
   </sql>
   <!--找回密码-->
   <select id="selectPassword" parameterType="java.lang.String" resultType="java.lang.String">
@@ -78,12 +80,13 @@
      WHERE username=#{username} and phone=#{phone}
   </select>
   <!--登录验证-->
-  <select id="selectByUsername" parameterType="java.lang.String" resultType="java.lang.String">
-     select password
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select
+    <include refid="Base_Column_List" />
      FROM r_admin
      WHERE username=#{username}
   </select>
-  <!--带条件的查询-->
+
   <select id="selectByExample" parameterType="com.running.bean.AdminBeanExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -98,33 +101,30 @@
       order by ${orderByClause}
     </if>
   </select>
-  <!--按照主键查询-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from r_admin
     where aid = #{aid,jdbcType=INTEGER}
   </select>
-  <!--按照主键删除-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from r_admin
     where aid = #{aid,jdbcType=INTEGER}
   </delete>
-  <!--按照条件删除-->
   <delete id="deleteByExample" parameterType="com.running.bean.AdminBeanExample">
     delete from r_admin
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <!--插入，增加-->
   <insert id="insert" parameterType="com.running.bean.AdminBean">
     insert into r_admin (aid, username, password, 
-      phone, apicture)
+      phone, apicture, aname, 
+      iden, works)
     values (#{aid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{apicture,jdbcType=VARCHAR})
+      #{phone,jdbcType=VARCHAR}, #{apicture,jdbcType=VARCHAR}, #{aname,jdbcType=VARCHAR}, 
+      #{iden,jdbcType=VARCHAR}, #{works,jdbcType=INTEGER})
   </insert>
-  <!--有选择的进行插入-->
   <insert id="insertSelective" parameterType="com.running.bean.AdminBean">
     insert into r_admin
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -143,6 +143,15 @@
       <if test="apicture != null">
         apicture,
       </if>
+      <if test="aname != null">
+        aname,
+      </if>
+      <if test="iden != null">
+        iden,
+      </if>
+      <if test="works != null">
+        works,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="aid != null">
@@ -160,16 +169,23 @@
       <if test="apicture != null">
         #{apicture,jdbcType=VARCHAR},
       </if>
+      <if test="aname != null">
+        #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="iden != null">
+        #{iden,jdbcType=VARCHAR},
+      </if>
+      <if test="works != null">
+        #{works,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <!--按照条件进行统计-->
   <select id="countByExample" parameterType="com.running.bean.AdminBeanExample" resultType="java.lang.Long">
     select count(*) from r_admin
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <!--按照条件进行有选择的更新-->
   <update id="updateByExampleSelective" parameterType="map">
     update r_admin
     <set>
@@ -188,24 +204,34 @@
       <if test="record.apicture != null">
         apicture = #{record.apicture,jdbcType=VARCHAR},
       </if>
+      <if test="record.aname != null">
+        aname = #{record.aname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iden != null">
+        iden = #{record.iden,jdbcType=VARCHAR},
+      </if>
+      <if test="record.works != null">
+        works = #{record.works,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <!--按照条件进行更新-->
   <update id="updateByExample" parameterType="map">
     update r_admin
     set aid = #{record.aid,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
-      apicture = #{record.apicture,jdbcType=VARCHAR}
+      apicture = #{record.apicture,jdbcType=VARCHAR},
+      aname = #{record.aname,jdbcType=VARCHAR},
+      iden = #{record.iden,jdbcType=VARCHAR},
+      works = #{record.works,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <!--按照主键有选择进行更新-->
   <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.AdminBean">
     update r_admin
     <set>
@@ -221,16 +247,27 @@
       <if test="apicture != null">
         apicture = #{apicture,jdbcType=VARCHAR},
       </if>
+      <if test="aname != null">
+        aname = #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="iden != null">
+        iden = #{iden,jdbcType=VARCHAR},
+      </if>
+      <if test="works != null">
+        works = #{works,jdbcType=INTEGER},
+      </if>
     </set>
     where aid = #{aid,jdbcType=INTEGER}
   </update>
-  <!--按照主键进行更新-->
   <update id="updateByPrimaryKey" parameterType="com.running.bean.AdminBean">
     update r_admin
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      apicture = #{apicture,jdbcType=VARCHAR}
+      apicture = #{apicture,jdbcType=VARCHAR},
+      aname = #{aname,jdbcType=VARCHAR},
+      iden = #{iden,jdbcType=VARCHAR},
+      works = #{works,jdbcType=INTEGER}
     where aid = #{aid,jdbcType=INTEGER}
   </update>
 </mapper>

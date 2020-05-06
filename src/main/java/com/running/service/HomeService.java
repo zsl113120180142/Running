@@ -23,6 +23,9 @@ public class HomeService {
     SemesterBeanMapper semesterBeanMapper;
     @Autowired
     WeekBeanMapper weekBeanMapper;
+    @Autowired
+    StatisticBeanMapper statisticBeanMapper;
+    
 
 
 
@@ -33,7 +36,12 @@ public class HomeService {
     public List<CollegeBean> getschool() {
         return collegeBeanMapper.selectByExample(null);
     }
-
+    public List<GradeBean> getgrade(){
+        return gradeBeanMapper.selectAllgrade();
+    }
+    public List<ClassesBean> getclasses(){
+        return classesBeanMapper.selectAllclasses();
+    }
     public List<GradeBean> findByCid(Integer cid) {
         return gradeBeanMapper.selectByCid(cid);
     }
@@ -47,5 +55,23 @@ public class HomeService {
     }
     public  List<WeekBean> findBySe(Integer seid) {
         return weekBeanMapper.selectBySeid(seid);
+    }
+
+    /**
+     * 通过周次查询数据
+     * @param wid
+     * @return
+     */
+    public List<StatisticBean> getSta(Integer wid) {
+        return statisticBeanMapper.selectByWid(wid);
+    }
+
+
+    public void deleteByClid(ClassesBean classesBean) {
+        classesBeanMapper.updateByPrimaryKeySelective(classesBean);
+    }
+
+    public void deleteByGid(GradeBean gradeBean) {
+        gradeBeanMapper.updateByPrimaryKeySelective(gradeBean);
     }
 }

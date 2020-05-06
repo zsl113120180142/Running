@@ -29,4 +29,6 @@ public interface ClassesBeanMapper {
     int updateByPrimaryKey(ClassesBean record);
 
     List<ClassesBean> selectByGid(Integer gid);
+
+    List<ClassesBean> selectAllclasses();
 }
