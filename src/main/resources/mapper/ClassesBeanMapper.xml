@@ -68,6 +68,12 @@
   <sql id="Base_Column_List">
     clid, clname, gid, cldelete
   </sql>
+  <select id="selectAllclasses" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from r_classes
+    where cldelete = 1
+  </select>
   <select id="selectByExample" parameterType="com.running.bean.ClassesBeanExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

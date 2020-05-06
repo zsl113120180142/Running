@@ -1,7 +1,5 @@
 package com.running.bean;
 
-import java.util.List;
-
 public class AdminBean {
     private Integer aid;
 
@@ -12,6 +10,12 @@ public class AdminBean {
     private String phone;
 
     private String apicture;
+
+    private String aname;
+
+    private String iden;
+
+    private Integer works;
 
     public Integer getAid() {
         return aid;
@@ -53,6 +57,30 @@ public class AdminBean {
         this.apicture = apicture == null ? null : apicture.trim();
     }
 
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname == null ? null : aname.trim();
+    }
+
+    public String getIden() {
+        return iden;
+    }
+
+    public void setIden(String iden) {
+        this.iden = iden == null ? null : iden.trim();
+    }
+
+    public Integer getWorks() {
+        return works;
+    }
+
+    public void setWorks(Integer works) {
+        this.works = works;
+    }
+
     @Override
     public String toString() {
         return "AdminBean{" +
@@ -61,7 +89,9 @@ public class AdminBean {
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", apicture='" + apicture + '\'' +
+                ", aname='" + aname + '\'' +
+                ", iden='" + iden + '\'' +
+                ", works=" + works +
                 '}';
     }
-
 }

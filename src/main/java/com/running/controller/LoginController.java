@@ -1,16 +1,17 @@
 package com.running.controller;
 
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.running.bean.AdminBean;
 import com.running.bean.Msg;
-import com.running.dao.AdminBeanMapper;
 import com.running.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 后台
@@ -29,18 +30,44 @@ public class LoginController {
      */
     @ResponseBody
     @RequestMapping("/Admins")
-    public Msg Admins(){
+    public Msg Admins(@RequestParam(value = "pn", defaultValue = "1") Integer pn){
+        // 这不是一个分页查询
+        // 引入PageHelper分页插件
+        // 在查询之前只需要调用，传入页码，以及每页的大小
+        PageHelper.startPage(pn, 10);
+        // startPage后面紧跟的这个查询就是一个分页查询
         List<AdminBean> adminBeans = loginService.admins();
-        return Msg.success().add("admins",adminBeans);
+        // 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
+        // 封装了详细的分页信息,包括有我们查询出来的数据，传入连续显示的页数
+        PageInfo page = new PageInfo(adminBeans,10);
+        return Msg.success().add("admins",page);
     }
 
     /**
      * 删除管理员
+     * 单个批量二合一
+     * 批量删除：1-2-3
+     * 单个删除：1
      */
     @ResponseBody
-    @RequestMapping(value="/deleteAdmin/{aid}",method=RequestMethod.DELETE)
-    public Msg deleteAdmin(@PathVariable("aid") Integer aid){
-        loginService.deleteAdmin(aid);
+    @RequestMapping(value="/deleteAdmin/{aids}",method=RequestMethod.DELETE)
+    public Msg deleteAdmin(@PathVariable("aids") String aids){
+        //批量删除
+        if(aids.contains("-")) {
+            List<Integer> del_aids = new ArrayList<>();
+            String[] str_aids = aids.split("-");
+            //组装id的集合,遍历数组
+            for (String string : str_aids) {
+                del_aids.add(Integer.parseInt(string));
+            }
+            //批量删除的方法
+            loginService.deleteBatch(del_aids);
+        }
+        else{
+            Integer aid = Integer.parseInt(aids);
+            loginService.deleteAdmin(aid);
+        }
+
         return Msg.success();
     }
     /**
@@ -49,7 +76,6 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value="/updataAdmin/{aid}",method=RequestMethod.PUT)
     public Msg UpdataAdmin(AdminBean adminBean){
-        System.out.println(adminBean);
         loginService.updataAdmin(adminBean);
         return Msg.success();
     }
@@ -93,10 +119,10 @@ public class LoginController {
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password) {
 
-        String login = loginService.DoLogin(username);
-
-        if (login.equals(password)) {
-            return Msg.doLogin();
+        AdminBean login = loginService.DoLogin(username);
+        String pass = login.getPassword();
+        if (pass.equals(password)&&login.getWorks()==1) {
+            return Msg.doLogin().add("login",login);
         } else {
             return Msg.fail().add("error", "账号密码错误");
         }
