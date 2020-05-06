@@ -7,16 +7,6 @@
     <result column="stnt" jdbcType="INTEGER" property="stnt" />
     <result column="wid" jdbcType="INTEGER" property="wid" />
   </resultMap>
-    <resultMap id="WeekResultMap" type="com.running.bean.StatisticBean">
-      <id column="stid" jdbcType="INTEGER" property="stid" />
-      <result column="sid" jdbcType="INTEGER" property="sid" />
-      <result column="stnt" jdbcType="INTEGER" property="stnt" />
-      <result column="wid" jdbcType="INTEGER" property="wid" />
-      <association property="studentBean" javaType="com.running.bean.StudentBean">
-        <id column="sid" jdbcType="INTEGER" property="sid" />
-        <result column="sex" jdbcType="VARCHAR" property="sex" />
-      </association>
-    </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -78,12 +68,6 @@
   <sql id="Base_Column_List">
     stid, sid, stnt, wid
   </sql>
-  <select id="selectByWid" parameterType="java.lang.Integer" resultMap="WeekResultMap">
-    SELECT sta.stid, sta.sid, sta.stnt, sta.wid , stu.sex
-    FROM r_statistic as sta
-    INNER JOIN r_student as stu ON sta.sid=stu.sid
-    WHERE wid=#{wid,jdbcType=INTEGER}
-  </select>
   <select id="selectByExample" parameterType="com.running.bean.StatisticBeanExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -99,7 +83,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from r_statistic
     where stid = #{stid,jdbcType=INTEGER}

@@ -130,23 +130,4 @@ public class StudentBean {
     public void setSdelete(Integer sdelete) {
         this.sdelete = sdelete;
     }
-
-    @Override
-    public String toString() {
-        return "StudentBean{" +
-                "sid=" + sid +
-                ", sname='" + sname + '\'' +
-                ", clid=" + clid +
-                ", sex='" + sex + '\'' +
-                ", snum='" + snum + '\'' +
-                ", inclass=" + inclass +
-                ", spe=" + spe +
-                ", srun=" + srun +
-                ", sresult=" + sresult +
-                ", spicture='" + spicture + '\'' +
-                ", spassword='" + spassword + '\'' +
-                ", snt=" + snt +
-                ", sdelete=" + sdelete +
-                '}';
-    }
 }

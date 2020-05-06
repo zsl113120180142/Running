@@ -27,6 +27,4 @@ public interface StatisticBeanMapper {
     int updateByPrimaryKeySelective(StatisticBean record);
 
     int updateByPrimaryKey(StatisticBean record);
-
-    List<StatisticBean> selectByWid(Integer wid);
 }

@@ -29,7 +29,4 @@ public interface GradeBeanMapper {
     int updateByPrimaryKeySelective(GradeBean record);
 
     int updateByPrimaryKey(GradeBean record);
-
-
-    List<GradeBean> selectAllgrade();
 }

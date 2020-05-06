@@ -68,12 +68,6 @@
   <sql id="Base_Column_List">
     gid, cid, gname, gdelete
   </sql>
-  <select id="selectAllgrade" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from r_grade
-    where gdelete = 1
-  </select>
   <select id="selectByExample" parameterType="com.running.bean.GradeBeanExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

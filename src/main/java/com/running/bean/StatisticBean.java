@@ -9,16 +9,6 @@ public class StatisticBean {
 
     private Integer wid;
 
-    private StudentBean studentBean;
-
-    public StudentBean getStudentBean() {
-        return studentBean;
-    }
-
-    public void setStudentBean(StudentBean studentBean) {
-        this.studentBean = studentBean;
-    }
-
     public Integer getStid() {
         return stid;
     }
@@ -49,16 +39,5 @@ public class StatisticBean {
 
     public void setWid(Integer wid) {
         this.wid = wid;
-    }
-
-    @Override
-    public String toString() {
-        return "StatisticBean{" +
-                "stid=" + stid +
-                ", sid=" + sid +
-                ", stnt=" + stnt +
-                ", wid=" + wid +
-                ", " + studentBean +
-                '}';
     }
 }

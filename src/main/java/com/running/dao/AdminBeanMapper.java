@@ -14,6 +14,10 @@ public interface AdminBeanMapper {
 
     int deleteByPrimaryKey(Integer aid);
 
+    String selectPassword(Map<String,String> map);
+
+    String selectByUsername(String username);
+
     int insert(AdminBean record);
 
     int insertSelective(AdminBean record);
@@ -30,7 +34,4 @@ public interface AdminBeanMapper {
 
     int updateByPrimaryKey(AdminBean record);
 
-    AdminBean selectByUsername(String username);
-
-    String selectPassword(Map<String, String> map);
 }
