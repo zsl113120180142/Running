@@ -119,12 +119,19 @@ public class LoginController {
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password) {
 
-        AdminBean login = loginService.DoLogin(username);
-        String pass = login.getPassword();
-        if (pass.equals(password)&&login.getWorks()==1) {
-            return Msg.doLogin().add("login",login);
-        } else {
-            return Msg.fail().add("error", "账号密码错误");
+        //数据库用户名重复校验
+        boolean b = loginService.checkUser(username);
+        if(b){
+            AdminBean login = loginService.DoLogin(username);
+            String pass = login.getPassword();
+            if (pass.equals(password)&&login.getWorks()==1) {
+                return Msg.doLogin().add("login",login);
+            } else {
+                return Msg.fail().add("error", "密码错误");
+            }
+        }else {
+            return Msg.fail().add("error", "账号错误");
         }
+
     }
 }

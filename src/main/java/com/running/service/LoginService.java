@@ -90,4 +90,18 @@ public class LoginService {
         criteria.andAidIn(del_aids);
         adminBeanMapper.deleteByExample(example);
     }
+
+    /**
+     * 检查用户名是否存在
+     * true：代表当前姓名存在   fasle：不存在
+     * @param username
+     * @return
+     */
+    public boolean checkUser(String username) {
+        AdminBeanExample example = new AdminBeanExample();
+        AdminBeanExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        long count = adminBeanMapper.countByExample(example);
+        return count==1;
+    }
 }
