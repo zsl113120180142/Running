@@ -6,6 +6,7 @@ import com.running.dao.SemesterBeanMapper;
 import com.running.dao.WeekBeanMapper;
 import com.running.service.HomeService;
 import com.running.service.LoginService;
+import com.running.service.StuService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,17 @@ public class TestDemo {
     SemesterBeanMapper semesterBeanMapper;
     @Autowired
     WeekBeanMapper weekBeanMapper;
+    @Autowired
+    StuService stuService;
 
     @Test
     public void mytest() {
-        Integer wid = 1;
-        List<StatisticBean> statistic = homeService.getSta(wid);
-        System.out.println(statistic);
+        Integer clid = 1;
+        String sname = "张";
+        Map<Object,Object> map = new HashMap<>();
+        map.put("clid",clid);
+        map.put("sname",sname);
+        List<StudentBean> studentBeans = stuService.searchsname(map);
+        System.out.println(studentBeans);
     }
 }

@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.running.dao.StudentBeanMapper">
   <resultMap id="BaseResultMap" type="com.running.bean.StudentBean">
+  <id column="sid" jdbcType="INTEGER" property="sid" />
+  <result column="sname" jdbcType="VARCHAR" property="sname" />
+  <result column="clid" jdbcType="INTEGER" property="clid" />
+  <result column="sex" jdbcType="VARCHAR" property="sex" />
+  <result column="snum" jdbcType="VARCHAR" property="snum" />
+  <result column="inclass" jdbcType="INTEGER" property="inclass" />
+  <result column="spe" jdbcType="INTEGER" property="spe" />
+  <result column="srun" jdbcType="INTEGER" property="srun" />
+  <result column="sresult" jdbcType="INTEGER" property="sresult" />
+  <result column="spicture" jdbcType="VARCHAR" property="spicture" />
+  <result column="spassword" jdbcType="VARCHAR" property="spassword" />
+  <result column="snt" jdbcType="INTEGER" property="snt" />
+  <result column="sdelete" jdbcType="INTEGER" property="sdelete" />
+</resultMap>
+  <resultMap id="ClidResultMap" type="com.running.bean.StudentBean">
     <id column="sid" jdbcType="INTEGER" property="sid" />
     <result column="sname" jdbcType="VARCHAR" property="sname" />
     <result column="clid" jdbcType="INTEGER" property="clid" />
@@ -15,6 +30,23 @@
     <result column="spassword" jdbcType="VARCHAR" property="spassword" />
     <result column="snt" jdbcType="INTEGER" property="snt" />
     <result column="sdelete" jdbcType="INTEGER" property="sdelete" />
+    <association property="classesBean" javaType="com.running.bean.ClassesBean">
+      <id column="clid" jdbcType="INTEGER" property="clid" />
+      <result column="clname" jdbcType="VARCHAR" property="clname" />
+
+      <association property="gradeBean" javaType="com.running.bean.GradeBean">
+        <id column="gid" jdbcType="INTEGER" property="gid" />
+        <result column="gname" jdbcType="INTEGER" property="gname" />
+
+        <association property="collegeBean" javaType="com.running.bean.CollegeBean">
+          <id column="cid" jdbcType="INTEGER" property="cid" />
+          <result column="cname" jdbcType="VARCHAR" property="cname" />
+        </association>
+
+      </association>
+
+    </association>
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,6 +110,38 @@
     sid, sname, clid, sex, snum, inclass, spe, srun, sresult, spicture, spassword, snt, 
     sdelete
   </sql>
+  <sql id="Clid_Column_List">
+    s.sid, s.sname, s.clid, s.sex, s.snum, s.inclass, s.spe, s.srun, s.sresult, s.spicture, s.spassword,
+    s.snt, s.sdelete, cl.clname, g.gname, c.cname
+  </sql>
+  <!--模糊查询-->
+  <select id="searchsname" parameterType="java.util.Map" resultMap="ClidResultMap">
+    select
+    <include refid="Clid_Column_List" />
+    from r_student as s
+    INNER JOIN r_classes as cl on s.clid=cl.clid
+    INNER JOIN r_grade as g on cl.gid=g.gid
+    INNER JOIN r_college as c on g.cid=c.cid
+    <where>
+      s.clid = #{clid,jdbcType=INTEGER} and s.sdelete=1
+      <if test="sname != null and sname != '' ">
+      AND s.sname LIKE CONCAT('%',#{sname},'%')
+      </if>
+
+    </where>
+
+  </select>
+  <!--通过班级id进行查找-->
+  <select id="selectByClid" parameterType="java.lang.Integer" resultMap="ClidResultMap">
+    select
+    <include refid="Clid_Column_List" />
+    from r_student as s
+    INNER JOIN r_classes as cl on s.clid=cl.clid
+    INNER JOIN r_grade as g on cl.gid=g.gid
+    INNER JOIN r_college as c on g.cid=c.cid
+    where s.clid = #{clid,jdbcType=INTEGER} and s.sdelete=1
+  </select>
+
   <select id="selectByExample" parameterType="com.running.bean.StudentBeanExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

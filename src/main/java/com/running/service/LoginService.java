@@ -57,7 +57,7 @@ public class LoginService {
      *
      * @param adminBean
      */
-    public void updataAdmin(AdminBean adminBean) {
+    public void updateAdmin(AdminBean adminBean) {
         adminBeanMapper.updateByPrimaryKeySelective(adminBean);
     }
 
@@ -89,6 +89,5 @@ public class LoginService {
         //delete from xxx where emp_id in(1,2,3)
         criteria.andAidIn(del_aids);
         adminBeanMapper.deleteByExample(example);
-
     }
 }

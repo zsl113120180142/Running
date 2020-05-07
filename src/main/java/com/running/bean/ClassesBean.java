@@ -9,6 +9,16 @@ public class ClassesBean {
 
     private Integer cldelete;
 
+    private GradeBean gradeBean;
+
+    public GradeBean getGradeBean() {
+        return gradeBean;
+    }
+
+    public void setGradeBean(GradeBean gradeBean) {
+        this.gradeBean = gradeBean;
+    }
+
     public Integer getClid() {
         return clid;
     }
@@ -48,6 +58,7 @@ public class ClassesBean {
                 ", clname='" + clname + '\'' +
                 ", gid=" + gid +
                 ", cldelete=" + cldelete +
+                ", gradeBean=" + gradeBean +
                 '}';
     }
 }

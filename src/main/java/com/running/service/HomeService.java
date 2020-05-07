@@ -42,14 +42,18 @@ public class HomeService {
     public List<ClassesBean> getclasses(){
         return classesBeanMapper.selectAllclasses();
     }
+
     public List<GradeBean> findByCid(Integer cid) {
         return gradeBeanMapper.selectByCid(cid);
     }
-
     public List<ClassesBean> findByGid(Integer gid) {
         return classesBeanMapper.selectByGid(gid);
     }
 
+    /**
+     * 返回学期和周数
+     * @return
+     */
     public List<SemesterBean> getWeek() {
         return semesterBeanMapper.selectByExample(null);
     }
@@ -66,11 +70,20 @@ public class HomeService {
         return statisticBeanMapper.selectByWid(wid);
     }
 
-
+    /**
+     * 通过clid删除
+     * 实际上是修改cldelete=0
+     * @param classesBean
+     */
     public void deleteByClid(ClassesBean classesBean) {
         classesBeanMapper.updateByPrimaryKeySelective(classesBean);
     }
 
+    /**
+     * 通过gid删除
+     * 实际上是修改gdelete=0
+     * @param gradeBean
+     */
     public void deleteByGid(GradeBean gradeBean) {
         gradeBeanMapper.updateByPrimaryKeySelective(gradeBean);
     }

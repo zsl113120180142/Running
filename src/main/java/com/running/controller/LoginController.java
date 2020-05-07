@@ -74,9 +74,9 @@ public class LoginController {
      * 修改管理员
      */
     @ResponseBody
-    @RequestMapping(value="/updataAdmin/{aid}",method=RequestMethod.PUT)
-    public Msg UpdataAdmin(AdminBean adminBean){
-        loginService.updataAdmin(adminBean);
+    @RequestMapping(value="/updateAdmin/{aid}",method=RequestMethod.PUT)
+    public Msg UpdateAdmin(AdminBean adminBean){
+        loginService.updateAdmin(adminBean);
         return Msg.success();
     }
 

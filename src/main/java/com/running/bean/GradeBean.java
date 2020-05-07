@@ -9,6 +9,16 @@ public class GradeBean {
 
     private Integer gdelete;
 
+    private CollegeBean collegeBean;
+
+    public CollegeBean getCollegeBean() {
+        return collegeBean;
+    }
+
+    public void setCollegeBean(CollegeBean collegeBean) {
+        this.collegeBean = collegeBean;
+    }
+
     public Integer getGid() {
         return gid;
     }
@@ -48,6 +58,7 @@ public class GradeBean {
                 ", cid=" + cid +
                 ", gname=" + gname +
                 ", gdelete=" + gdelete +
+                ", collegeBean=" + collegeBean +
                 '}';
     }
 }

@@ -3,6 +3,8 @@ package com.running.dao;
 import com.running.bean.StudentBean;
 import com.running.bean.StudentBeanExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface StudentBeanMapper {
@@ -27,4 +29,8 @@ public interface StudentBeanMapper {
     int updateByPrimaryKeySelective(StudentBean record);
 
     int updateByPrimaryKey(StudentBean record);
+
+    List<StudentBean> selectByClid(Integer clid);
+
+    List<StudentBean> searchsname(Map<Object, Object> map);
 }

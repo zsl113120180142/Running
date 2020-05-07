@@ -27,6 +27,16 @@ public class StudentBean {
 
     private Integer sdelete;
 
+    private ClassesBean classesBean;
+
+    public ClassesBean getClassesBean() {
+        return classesBean;
+    }
+
+    public void setClassesBean(ClassesBean classesBean) {
+        this.classesBean = classesBean;
+    }
+
     public Integer getSid() {
         return sid;
     }
@@ -147,6 +157,7 @@ public class StudentBean {
                 ", spassword='" + spassword + '\'' +
                 ", snt=" + snt +
                 ", sdelete=" + sdelete +
+                ", classesBean=" + classesBean +
                 '}';
     }
 }
