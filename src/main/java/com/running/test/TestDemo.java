@@ -36,12 +36,8 @@ public class TestDemo {
 
     @Test
     public void mytest() {
-        Integer clid = 1;
-        String sname = "张";
-        Map<Object,Object> map = new HashMap<>();
-        map.put("clid",clid);
-        map.put("sname",sname);
-        List<StudentBean> studentBeans = stuService.searchsname(map);
-        System.out.println(studentBeans);
+        String aname = "瑶";
+        List<AdminBean> adminBeans = loginService.searchaname(aname);
+        System.out.println(adminBeans);
     }
 }

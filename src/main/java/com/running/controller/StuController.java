@@ -3,6 +3,7 @@ package com.running.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.running.bean.Msg;
+import com.running.bean.SemesterBean;
 import com.running.bean.StudentBean;
 import com.running.service.StuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,7 @@ public class StuController {
         stuService.updateStu(studentBean);
         return Msg.success();
     }
+
 
 
 }

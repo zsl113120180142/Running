@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.running.dao.RuleBeanMapper">
   <resultMap id="BaseResultMap" type="com.running.bean.RuleBean">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
     <result column="rweek" jdbcType="INTEGER" property="rweek" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="rkm" jdbcType="VARCHAR" property="rkm" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    rweek, sex, rkm, rtime, starttime, endtime
+    uid, rweek, sex, rkm, rtime, starttime, endtime
   </sql>
   <select id="selectByExample" parameterType="com.running.bean.RuleBeanExample" resultMap="BaseResultMap">
     select
@@ -84,6 +85,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from r_rule
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from r_rule
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="com.running.bean.RuleBeanExample">
     delete from r_rule
     <if test="_parameter != null">
@@ -91,16 +102,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.running.bean.RuleBean">
-    insert into r_rule (rweek, sex, rkm, 
-      rtime, starttime, endtime
-      )
-    values (#{rweek,jdbcType=INTEGER}, #{sex,jdbcType=VARCHAR}, #{rkm,jdbcType=VARCHAR}, 
-      #{rtime,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, #{endtime,jdbcType=VARCHAR}
-      )
+    insert into r_rule (uid, rweek, sex, 
+      rkm, rtime, starttime, 
+      endtime)
+    values (#{uid,jdbcType=INTEGER}, #{rweek,jdbcType=INTEGER}, #{sex,jdbcType=VARCHAR}, 
+      #{rkm,jdbcType=VARCHAR}, #{rtime,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, 
+      #{endtime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.running.bean.RuleBean">
     insert into r_rule
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
       <if test="rweek != null">
         rweek,
       </if>
@@ -121,6 +135,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
       <if test="rweek != null">
         #{rweek,jdbcType=INTEGER},
       </if>
@@ -150,6 +167,9 @@
   <update id="updateByExampleSelective" parameterType="map">
     update r_rule
     <set>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
       <if test="record.rweek != null">
         rweek = #{record.rweek,jdbcType=INTEGER},
       </if>
@@ -175,7 +195,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update r_rule
-    set rweek = #{record.rweek,jdbcType=INTEGER},
+    set uid = #{record.uid,jdbcType=INTEGER},
+      rweek = #{record.rweek,jdbcType=INTEGER},
       sex = #{record.sex,jdbcType=VARCHAR},
       rkm = #{record.rkm,jdbcType=VARCHAR},
       rtime = #{record.rtime,jdbcType=VARCHAR},
@@ -184,5 +205,39 @@
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.RuleBean">
+    update r_rule
+    <set>
+      <if test="rweek != null">
+        rweek = #{rweek,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="rkm != null">
+        rkm = #{rkm,jdbcType=VARCHAR},
+      </if>
+      <if test="rtime != null">
+        rtime = #{rtime,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.running.bean.RuleBean">
+    update r_rule
+    set rweek = #{rweek,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=VARCHAR},
+      rkm = #{rkm,jdbcType=VARCHAR},
+      rtime = #{rtime,jdbcType=VARCHAR},
+      starttime = #{starttime,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>

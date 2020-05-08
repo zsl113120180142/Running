@@ -10,13 +10,21 @@ public interface RuleBeanMapper {
 
     int deleteByExample(RuleBeanExample example);
 
+    int deleteByPrimaryKey(Integer uid);
+
     int insert(RuleBean record);
 
     int insertSelective(RuleBean record);
 
     List<RuleBean> selectByExample(RuleBeanExample example);
 
+    RuleBean selectByPrimaryKey(Integer uid);
+
     int updateByExampleSelective(@Param("record") RuleBean record, @Param("example") RuleBeanExample example);
 
     int updateByExample(@Param("record") RuleBean record, @Param("example") RuleBeanExample example);
+
+    int updateByPrimaryKeySelective(RuleBean record);
+
+    int updateByPrimaryKey(RuleBean record);
 }

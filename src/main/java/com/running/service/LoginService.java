@@ -2,6 +2,7 @@ package com.running.service;
 
 import com.running.bean.AdminBean;
 import com.running.bean.AdminBeanExample;
+import com.running.bean.StudentBean;
 import com.running.dao.AdminBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,5 +104,10 @@ public class LoginService {
         criteria.andUsernameEqualTo(username);
         long count = adminBeanMapper.countByExample(example);
         return count==1;
+    }
+
+
+    public List<AdminBean> searchaname(String aname) {
+        return adminBeanMapper.searchaname(aname);
     }
 }

@@ -33,4 +33,6 @@ public interface AdminBeanMapper {
     AdminBean selectByUsername(String username);
 
     String selectPassword(Map<String, String> map);
+
+    List<AdminBean> searchaname(String aname);
 }

@@ -1,6 +1,8 @@
 package com.running.bean;
 
 public class RuleBean {
+    private Integer uid;
+
     private Integer rweek;
 
     private String sex;
@@ -12,6 +14,14 @@ public class RuleBean {
     private String starttime;
 
     private String endtime;
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
     public Integer getRweek() {
         return rweek;

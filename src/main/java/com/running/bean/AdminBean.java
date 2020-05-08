@@ -15,7 +15,7 @@ public class AdminBean {
 
     private String iden;
 
-    private Integer works;
+    private Boolean works;
 
     public Integer getAid() {
         return aid;
@@ -73,11 +73,11 @@ public class AdminBean {
         this.iden = iden == null ? null : iden.trim();
     }
 
-    public Integer getWorks() {
+    public Boolean getWorks() {
         return works;
     }
 
-    public void setWorks(Integer works) {
+    public void setWorks(Boolean works) {
         this.works = works;
     }
 

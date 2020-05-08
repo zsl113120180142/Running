@@ -1,5 +1,6 @@
 package com.running.service;
 
+import com.running.bean.SemesterBean;
 import com.running.bean.StudentBean;
 import com.running.dao.StudentBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +54,6 @@ public class StuService {
     public void updateStu(StudentBean studentBean) {
         studentBeanMapper.updateByPrimaryKeySelective(studentBean);
     }
+
+
 }

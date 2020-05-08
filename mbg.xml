@@ -39,9 +39,9 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- 指定要逆向分析哪些表：根据表要创建javaBean -->
-        <table tableName="r_admin" domainObjectName="AdminBean"></table>
+        <table tableName="r_rule" domainObjectName="RuleBean"></table>
         <!--
-
+        <table tableName="r_admin" domainObjectName="AdminBean"></table>
         <table tableName="r_classes" domainObjectName="ClassesBean"></table>
         <table tableName="r_college" domainObjectName="CollegeBean"></table>
         <table tableName="r_grade" domainObjectName="GradeBean"></table>

@@ -1,123 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.running.dao.AdminBeanMapper">
-  <resultMap id="BaseResultMap" type="com.running.bean.AdminBean">
-    <id column="aid" jdbcType="INTEGER" property="aid" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="apicture" jdbcType="VARCHAR" property="apicture" />
-    <result column="aname" jdbcType="VARCHAR" property="aname" />
-    <result column="iden" jdbcType="VARCHAR" property="iden" />
-    <result column="works" jdbcType="INTEGER" property="works" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.running.bean.AdminBean">
+        <id column="aid" jdbcType="INTEGER" property="aid"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="apicture" jdbcType="VARCHAR" property="apicture"/>
+        <result column="aname" jdbcType="VARCHAR" property="aname"/>
+        <result column="iden" jdbcType="VARCHAR" property="iden"/>
+        <result column="works" jdbcType="INTEGER" property="works"/>
+    </resultMap>
 
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     aid, username, password, phone, apicture, aname, iden, works
   </sql>
-  <!--找回密码-->
-  <select id="selectPassword" parameterType="java.lang.String" resultType="java.lang.String">
+    <!--模糊查询-->
+    <select id="searchaname" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from r_admin
+        <where>
+            <if test="_parameter != null and _parameter != '' ">
+                aname LIKE CONCAT('%',#{aname},'%')
+            </if>
+        </where>
+    </select>
+    <!--找回密码-->
+    <select id="selectPassword" parameterType="java.lang.String" resultType="java.lang.String">
      SELECT password
      FROM r_admin
      WHERE username=#{username} and phone=#{phone}
   </select>
-  <!--登录验证-->
-  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-     select
-    <include refid="Base_Column_List" />
-     FROM r_admin
-     WHERE username=#{username}
-  </select>
+    <!--登录验证-->
+    <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM r_admin
+        WHERE username=#{username}
+    </select>
 
-  <select id="selectByExample" parameterType="com.running.bean.AdminBeanExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from r_admin
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from r_admin
-    where aid = #{aid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByExample" parameterType="com.running.bean.AdminBeanExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from r_admin
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from r_admin
+        where aid = #{aid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from r_admin
     where aid = #{aid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.running.bean.AdminBeanExample">
-    delete from r_admin
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.running.bean.AdminBean">
+    <delete id="deleteByExample" parameterType="com.running.bean.AdminBeanExample">
+        delete from r_admin
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.running.bean.AdminBean">
     insert into r_admin (aid, username, password, 
       phone, apicture, aname, 
       iden, works)
@@ -125,141 +138,141 @@
       #{phone,jdbcType=VARCHAR}, #{apicture,jdbcType=VARCHAR}, #{aname,jdbcType=VARCHAR}, 
       #{iden,jdbcType=VARCHAR}, #{works,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.running.bean.AdminBean">
-    insert into r_admin
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="aid != null">
-        aid,
-      </if>
-      <if test="username != null">
-        username,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="apicture != null">
-        apicture,
-      </if>
-      <if test="aname != null">
-        aname,
-      </if>
-      <if test="iden != null">
-        iden,
-      </if>
-      <if test="works != null">
-        works,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="aid != null">
-        #{aid,jdbcType=INTEGER},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="apicture != null">
-        #{apicture,jdbcType=VARCHAR},
-      </if>
-      <if test="aname != null">
-        #{aname,jdbcType=VARCHAR},
-      </if>
-      <if test="iden != null">
-        #{iden,jdbcType=VARCHAR},
-      </if>
-      <if test="works != null">
-        #{works,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.running.bean.AdminBeanExample" resultType="java.lang.Long">
-    select count(*) from r_admin
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update r_admin
-    <set>
-      <if test="record.aid != null">
-        aid = #{record.aid,jdbcType=INTEGER},
-      </if>
-      <if test="record.username != null">
+    <insert id="insertSelective" parameterType="com.running.bean.AdminBean">
+        insert into r_admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aid != null">
+                aid,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="apicture != null">
+                apicture,
+            </if>
+            <if test="aname != null">
+                aname,
+            </if>
+            <if test="iden != null">
+                iden,
+            </if>
+            <if test="works != null">
+                works,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aid != null">
+                #{aid,jdbcType=INTEGER},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="apicture != null">
+                #{apicture,jdbcType=VARCHAR},
+            </if>
+            <if test="aname != null">
+                #{aname,jdbcType=VARCHAR},
+            </if>
+            <if test="iden != null">
+                #{iden,jdbcType=VARCHAR},
+            </if>
+            <if test="works != null">
+                #{works,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.running.bean.AdminBeanExample" resultType="java.lang.Long">
+        select count(*) from r_admin
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update r_admin
+        <set>
+            <if test="record.aid != null">
+                aid = #{record.aid,jdbcType=INTEGER},
+            </if>
+            <if test="record.username != null">
+                username = #{record.username,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.phone != null">
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.apicture != null">
+                apicture = #{record.apicture,jdbcType=VARCHAR},
+            </if>
+            <if test="record.aname != null">
+                aname = #{record.aname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.iden != null">
+                iden = #{record.iden,jdbcType=VARCHAR},
+            </if>
+            <if test="record.works != null">
+                works = #{record.works,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update r_admin
+        set aid = #{record.aid,jdbcType=INTEGER},
         username = #{record.username,jdbcType=VARCHAR},
-      </if>
-      <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
-      </if>
-      <if test="record.apicture != null">
         apicture = #{record.apicture,jdbcType=VARCHAR},
-      </if>
-      <if test="record.aname != null">
         aname = #{record.aname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.iden != null">
         iden = #{record.iden,jdbcType=VARCHAR},
-      </if>
-      <if test="record.works != null">
-        works = #{record.works,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update r_admin
-    set aid = #{record.aid,jdbcType=INTEGER},
-      username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      apicture = #{record.apicture,jdbcType=VARCHAR},
-      aname = #{record.aname,jdbcType=VARCHAR},
-      iden = #{record.iden,jdbcType=VARCHAR},
-      works = #{record.works,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.AdminBean">
-    update r_admin
-    <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="apicture != null">
-        apicture = #{apicture,jdbcType=VARCHAR},
-      </if>
-      <if test="aname != null">
-        aname = #{aname,jdbcType=VARCHAR},
-      </if>
-      <if test="iden != null">
-        iden = #{iden,jdbcType=VARCHAR},
-      </if>
-      <if test="works != null">
-        works = #{works,jdbcType=INTEGER},
-      </if>
-    </set>
-    where aid = #{aid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.running.bean.AdminBean">
+        works = #{record.works,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.running.bean.AdminBean">
+        update r_admin
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="apicture != null">
+                apicture = #{apicture,jdbcType=VARCHAR},
+            </if>
+            <if test="aname != null">
+                aname = #{aname,jdbcType=VARCHAR},
+            </if>
+            <if test="iden != null">
+                iden = #{iden,jdbcType=VARCHAR},
+            </if>
+            <if test="works != null">
+                works = #{works,jdbcType=INTEGER},
+            </if>
+        </set>
+        where aid = #{aid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.running.bean.AdminBean">
     update r_admin
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

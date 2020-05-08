@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.running.bean.AdminBean;
 import com.running.bean.Msg;
+import com.running.bean.StudentBean;
 import com.running.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,12 +26,25 @@ public class LoginController {
 
 
     /**
+     * admin模糊查询（通过姓名）
+     */
+    @ResponseBody
+    @RequestMapping("/searchAname")
+    public Msg Adminsearch(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
+                           @RequestParam(value = "aname") String aname) {
+        PageHelper.startPage(pn, 10);
+        List<AdminBean> adminBeans = loginService.searchaname(aname);
+        PageInfo page = new PageInfo(adminBeans, 10);
+        return Msg.success().add("searchadmin", page);
+    }
+
+    /**
      * 显示管理员信息
      * 数据丢失一般与bean方法中的get和set方法有关
      */
     @ResponseBody
     @RequestMapping("/Admins")
-    public Msg Admins(@RequestParam(value = "pn", defaultValue = "1") Integer pn){
+    public Msg Admins(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
         // 这不是一个分页查询
         // 引入PageHelper分页插件
         // 在查询之前只需要调用，传入页码，以及每页的大小
@@ -39,8 +53,8 @@ public class LoginController {
         List<AdminBean> adminBeans = loginService.admins();
         // 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
         // 封装了详细的分页信息,包括有我们查询出来的数据，传入连续显示的页数
-        PageInfo page = new PageInfo(adminBeans,10);
-        return Msg.success().add("admins",page);
+        PageInfo page = new PageInfo(adminBeans, 10);
+        return Msg.success().add("admins", page);
     }
 
     /**
@@ -50,10 +64,10 @@ public class LoginController {
      * 单个删除：1
      */
     @ResponseBody
-    @RequestMapping(value="/deleteAdmin/{aids}",method=RequestMethod.DELETE)
-    public Msg deleteAdmin(@PathVariable("aids") String aids){
+    @RequestMapping(value = "/deleteAdmin/{aids}", method = RequestMethod.DELETE)
+    public Msg deleteAdmin(@PathVariable("aids") String aids) {
         //批量删除
-        if(aids.contains("-")) {
+        if (aids.contains("-")) {
             List<Integer> del_aids = new ArrayList<>();
             String[] str_aids = aids.split("-");
             //组装id的集合,遍历数组
@@ -62,20 +76,20 @@ public class LoginController {
             }
             //批量删除的方法
             loginService.deleteBatch(del_aids);
-        }
-        else{
+        } else {
             Integer aid = Integer.parseInt(aids);
             loginService.deleteAdmin(aid);
         }
 
         return Msg.success();
     }
+
     /**
      * 修改管理员
      */
     @ResponseBody
-    @RequestMapping(value="/updateAdmin/{aid}",method=RequestMethod.PUT)
-    public Msg UpdateAdmin(AdminBean adminBean){
+    @RequestMapping(value = "/updateAdmin/{aid}", method = RequestMethod.PUT)
+    public Msg UpdateAdmin(AdminBean adminBean) {
         loginService.updateAdmin(adminBean);
         return Msg.success();
     }
@@ -84,12 +98,13 @@ public class LoginController {
     /**
      * 新增管理员
      */
-    @RequestMapping(value="/addAdmin",method= RequestMethod.POST)
+    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
     @ResponseBody
-    public Msg AddAdmin(AdminBean adminBean){
+    public Msg AddAdmin(AdminBean adminBean) {
         loginService.addAdmin(adminBean);
         return Msg.success();
     }
+
     /**
      * 找回密码
      */
@@ -121,15 +136,15 @@ public class LoginController {
 
         //数据库用户名重复校验
         boolean b = loginService.checkUser(username);
-        if(b){
+        if (b) {
             AdminBean login = loginService.DoLogin(username);
             String pass = login.getPassword();
-            if (pass.equals(password)&&login.getWorks()==1) {
-                return Msg.doLogin().add("login",login);
+            if (pass.equals(password) && login.getWorks() == true) {
+                return Msg.doLogin().add("login", login);
             } else {
                 return Msg.fail().add("error", "密码错误");
             }
-        }else {
+        } else {
             return Msg.fail().add("error", "账号错误");
         }
 
