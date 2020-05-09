@@ -37,10 +37,35 @@ public class HomeController {
         List<CollegeBean> Allcollege = homeService.getschool();//学院
         List<GradeBean> Allgrade = homeService.getgrade();//年级
         List<ClassesBean> Allclasses = homeService.getclasses();//班级
-        Map<Object,Object> map = new HashMap<>();
+        List<Object> colleges = new ArrayList<>();
+        for (int i=0 ; i < Allcollege.size();i++){
+            Map<Object,Object> obj = new HashMap<>();
+            obj.put("college",Allcollege.get(i).toString());
+            List<Object> csub = new ArrayList<>();
+            obj.put("csub",csub);
+            for (int j=0;j<Allgrade.size();j++){
+                Map<Object,Object> gobj = new HashMap<>();
+                if (Allcollege.get(i).getCid()==Allgrade.get(j).getCid()){
+                    gobj.put("grade",Allgrade.get(j).toString());
+                    csub.add(gobj);
+                }
+                List<Object> gsub = new ArrayList<>();
+                gobj.put("gsub",gsub);
+                for (int n=0;n<Allclasses.size();n++){
+                    if (Allgrade.get(j).getGid()==Allclasses.get(n).getGid()){
+                        Map<Object,Object> clobj = new HashMap<>();
+                        clobj.put("classes",Allclasses.get(n).toString());
+                        gsub.add(clobj);
+                    }
+                }
+            }
+            colleges.add(obj);
+        }
+        /*Map<Object,Object> map = new HashMap<>();
         map.put("college",Allcollege);
         map.put("grade",Allgrade);
-        map.put("classes",Allclasses);
+        map.put("classes",Allclasses);*/
+
         /*
         后台形成树形结构，试了很多方法，在贴合数据库的情况下，以下版本是最接近成功的，但还有较大的瑕疵，遂不启用
         */
@@ -63,7 +88,7 @@ public class HomeController {
                 schol.add(list);
             }
         }*/
-        return Msg.success().add("map", map);
+        return Msg.success().add("colleges", colleges);
     }
 
     /**

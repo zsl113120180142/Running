@@ -36,8 +36,33 @@ public class TestDemo {
 
     @Test
     public void mytest() {
-        String aname = "瑶";
-        List<AdminBean> adminBeans = loginService.searchaname(aname);
-        System.out.println(adminBeans);
+        List<CollegeBean> Allcollege = homeService.getschool();//学院
+        List<GradeBean> Allgrade = homeService.getgrade();//年级
+        List<ClassesBean> Allclasses = homeService.getclasses();//班级
+        List<Object> colleges = new ArrayList<>();
+        for (int i=0 ; i < Allcollege.size();i++){
+            Map<Object,Object> obj = new HashMap<>();
+            obj.put("college",Allcollege.get(i).toString());
+            List<Object> csub = new ArrayList<>();
+            obj.put("csub",csub);
+            for (int j=0;j<Allgrade.size();j++){
+                Map<Object,Object> gobj = new HashMap<>();
+                if (Allcollege.get(i).getCid()==Allgrade.get(j).getCid()){
+                    gobj.put("grade",Allgrade.get(j).toString());
+                    csub.add(gobj);
+                }
+                List<Object> gsub = new ArrayList<>();
+                gobj.put("gsub",gsub);
+                for (int n=0;n<Allclasses.size();n++){
+                   if (Allgrade.get(j).getGid()==Allclasses.get(n).getGid()){
+                       Map<Object,Object> clobj = new HashMap<>();
+                       clobj.put("classes",Allclasses.get(n).toString());
+                       gsub.add(clobj);
+                   }
+                }
+            }
+            colleges.add(obj);
+        }
+        System.out.println(colleges);
     }
 }
