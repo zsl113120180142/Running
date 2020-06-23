@@ -156,7 +156,19 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+
   </select>
+
+  <select id="countByExampleandsex"   resultType="java.lang.Long">
+    select count(*) from r_statistic as st
+    INNER JOIN r_student as s
+    ON st.sid = s.sid
+    where s.sex = #{sex}
+    and st.wid = #{wid}
+    and st.stnt = #{stnt}
+
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update r_statistic
     <set>

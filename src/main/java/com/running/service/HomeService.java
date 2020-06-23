@@ -5,6 +5,7 @@ import com.running.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,12 +63,17 @@ public class HomeService {
     }
 
     /**
-     * 通过周次查询数据
+     * 通过周次查询跑步人数
      * @param wid
      * @return
      */
-    public List<StatisticBean> getSta(Integer wid) {
-        return statisticBeanMapper.selectByWid(wid);
+
+    public long sta(Integer wid,Integer stnt,String sex){
+        HashMap<Object,Object> map = new HashMap<>();
+        map.put("wid",wid);
+        map.put("stnt",stnt);
+        map.put("sex",sex);
+        return statisticBeanMapper.countByExampleandsex(map);
     }
 
     /**

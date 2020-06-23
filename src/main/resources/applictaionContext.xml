@@ -49,7 +49,7 @@
     <!-- =================== 开启事务 ===================== -->
     <aop:config>
         <!-- 切入点表达式 -->
-        <aop:pointcut expression="execution(* com.atgui.crud.service..*(..))" id="txPoint"/>
+        <aop:pointcut expression="execution(* com.running.service..*(..))" id="txPoint"/>
         <!-- 配置事务增强-->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
     </aop:config>

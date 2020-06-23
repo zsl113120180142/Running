@@ -2,12 +2,10 @@ package com.running.controller;
 
 import com.running.bean.*;
 import com.running.service.HomeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,14 +22,12 @@ public class HomeController {
     HomeService homeService;
 
     /**
-     * 树形结构：学院【{
-     * 年级【{
-     * 班级
-     * }】
-     * }】
+     * 三层树形结构
+     * @return
      */
+
     @ResponseBody
-    @RequestMapping("/HomePage")
+    @GetMapping("/HomePage")
     public Msg HomePage() {
         //数据库取出全部菜单
         List<CollegeBean> Allcollege = homeService.getschool();//学院
@@ -61,33 +57,6 @@ public class HomeController {
             }
             colleges.add(obj);
         }
-        /*Map<Object,Object> map = new HashMap<>();
-        map.put("college",Allcollege);
-        map.put("grade",Allgrade);
-        map.put("classes",Allclasses);*/
-
-        /*
-        后台形成树形结构，试了很多方法，在贴合数据库的情况下，以下版本是最接近成功的，但还有较大的瑕疵，遂不启用
-        */
-        /*List<Object> schol = new ArrayList<>();
-        for (int i = 0; i < Allcollege.size(); i++) {
-            for (int j = 0; j < Allgrade.size(); j++) {
-                Map<Object, Object> list = new HashMap<>();
-                List<Object> grades = new ArrayList<>();
-                if (Allcollege.get(i).getCid() == Allgrade.get(j).getCid()) {
-                    list.put("college", Allcollege.get(i).toString());
-                    grades.add(Allgrade.get(j).toString());
-                    list.put("grade", grades);
-                    for (int n = 0; n < Allclasses.size(); n++) {
-                        if (Allcollege.get(i).getCid() == Allgrade.get(j).getCid()
-                                && Allgrade.get(j).getGid() == Allclasses.get(n).getGid()) {
-                            grades.add(Allclasses.get(n).toString());
-                        }
-                    }
-                }
-                schol.add(list);
-            }
-        }*/
         return Msg.success().add("colleges", colleges);
     }
 
@@ -96,7 +65,7 @@ public class HomeController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getWeek")
+    @GetMapping("/getWeek")
     public Msg getWeek(){
         Map<Object,Object> map = new HashMap<>();
         List<SemesterBean> semesterBeans = homeService.getWeek();
@@ -111,16 +80,48 @@ public class HomeController {
 
     /**
      * 根据周数返回跑步记录
+     * @param wid
+     * @return
      */
     @ResponseBody
-    @RequestMapping("/getSta")
-    public Msg getstaByweek( @RequestParam(value = "wid") Integer wid){
-        List<StatisticBean> statistic = homeService.getSta(wid);
-        return Msg.success().add("跑步信息",statistic);
+    @GetMapping("/getSta")
+    public Msg getstaByweek(@RequestParam(value ="wid") Integer wid){
+        //跑0圈的男生数
+        Integer stnt0 = 0;
+        String sex1 ="男";
+        long zeroboy = homeService.sta(wid,stnt0,sex1);
+        //跑一圈的男生数
+        Integer stnt1 = 1;
+        long oneboy = homeService.sta(wid,stnt1,sex1);
+        //跑两圈的男生数
+        Integer stnt2 = 2;
+        long twoboy = homeService.sta(wid,stnt2,sex1);
+        //跑0圈的女生数
+        String sex2 ="女";
+        long zerogril = homeService.sta(wid,stnt0,sex2);
+        //跑一圈的女生数
+        long onegril = homeService.sta(wid,stnt1,sex2);
+        //跑两圈的女生数
+        long twogril = homeService.sta(wid,stnt2,sex2);
+        //所有男生
+        long allboy = zeroboy+oneboy+twoboy;
+        //所有女生
+        long allgril = zerogril+onegril+twogril;
+        return Msg.success()
+                .add("zeroboy",zeroboy)
+                .add("oneboy",oneboy)
+                .add("twoboy",twoboy)
+                .add("zerogril",zerogril)
+                .add("onegril",onegril)
+                .add("twogril",twogril)
+                .add("allboy",allboy)
+                .add("allgril",allgril);
     }
 
     /**
      * 根据班级id删除班级
+     * @param classesBean
+     * @return
      */
     @ResponseBody
     @RequestMapping(value="/deleteclasses/{clid}",method= RequestMethod.PUT)
@@ -131,6 +132,8 @@ public class HomeController {
 
     /**
      * 根据年级id删除年级
+     * @param gradeBean
+     * @return
      */
     @ResponseBody
     @RequestMapping(value="/deletegrade/{gid}",method= RequestMethod.PUT)

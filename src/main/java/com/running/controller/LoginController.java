@@ -29,7 +29,7 @@ public class LoginController {
      * admin模糊查询（通过姓名）
      */
     @ResponseBody
-    @RequestMapping("/searchAname")
+    @GetMapping("/searchAname")
     public Msg Adminsearch(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "aname") String aname) {
         PageHelper.startPage(pn, 10);
@@ -43,7 +43,7 @@ public class LoginController {
      * 数据丢失一般与bean方法中的get和set方法有关
      */
     @ResponseBody
-    @RequestMapping("/Admins")
+    @GetMapping("/Admins")
     public Msg Admins(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
         // 这不是一个分页查询
         // 引入PageHelper分页插件
@@ -64,7 +64,7 @@ public class LoginController {
      * 单个删除：1
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteAdmin/{aids}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteAdmin", method = RequestMethod.DELETE)
     public Msg deleteAdmin(@PathVariable("aids") String aids) {
         //批量删除
         if (aids.contains("-")) {
@@ -88,7 +88,7 @@ public class LoginController {
      * 修改管理员
      */
     @ResponseBody
-    @RequestMapping(value = "/updateAdmin/{aid}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateAdmin", method = RequestMethod.PUT)
     public Msg UpdateAdmin(AdminBean adminBean) {
         loginService.updateAdmin(adminBean);
         return Msg.success();
@@ -109,7 +109,7 @@ public class LoginController {
      * 找回密码
      */
     @ResponseBody
-    @RequestMapping("/GetPassword")
+    @GetMapping("/GetPassword")
     public Msg GetPassword(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "phone") String phone) {
@@ -129,7 +129,7 @@ public class LoginController {
      * 并在返回时返回taken
      */
     @ResponseBody
-    @RequestMapping("/DoLogin")
+    @GetMapping("/DoLogin")
     public Msg DoLogin(
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password) {
