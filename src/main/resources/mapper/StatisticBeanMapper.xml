@@ -221,4 +221,5 @@
       wid = #{wid,jdbcType=INTEGER}
     where stid = #{stid,jdbcType=INTEGER}
   </update>
+
 </mapper>
