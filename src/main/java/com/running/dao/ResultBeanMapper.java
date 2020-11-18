@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.ResultBean;
 import com.running.bean.ResultBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ResultBeanMapper {

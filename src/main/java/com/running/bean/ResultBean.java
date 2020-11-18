@@ -30,4 +30,13 @@ public class ResultBean {
     public void setRresult(Integer rresult) {
         this.rresult = rresult;
     }
+
+    @Override
+    public String toString() {
+        return "ResultBean{" +
+                "rid=" + rid +
+                ", minresult=" + minresult +
+                ", rresult=" + rresult +
+                '}';
+    }
 }

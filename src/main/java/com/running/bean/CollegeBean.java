@@ -1,9 +1,21 @@
 package com.running.bean;
 
+import java.util.List;
+
 public class CollegeBean {
     private Integer cid;
 
     private String cname;
+
+    private List<GradeBean> gradeBeanList;
+
+    public List<GradeBean> getGradeBeanList() {
+        return gradeBeanList;
+    }
+
+    public void setGradeBeanList(List<GradeBean> gradeBeanList) {
+        this.gradeBeanList = gradeBeanList;
+    }
 
     public Integer getCid() {
         return cid;
@@ -26,6 +38,7 @@ public class CollegeBean {
         return "CollegeBean{" +
                 "cid=" + cid +
                 ", cname='" + cname + '\'' +
+                ", gradeBeanList=" + gradeBeanList +
                 '}';
     }
 }

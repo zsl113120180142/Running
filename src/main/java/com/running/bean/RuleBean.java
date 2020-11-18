@@ -70,4 +70,17 @@ public class RuleBean {
     public void setEndtime(String endtime) {
         this.endtime = endtime == null ? null : endtime.trim();
     }
+
+    @Override
+    public String toString() {
+        return "RuleBean{" +
+                "uid=" + uid +
+                ", rweek=" + rweek +
+                ", sex='" + sex + '\'' +
+                ", rkm='" + rkm + '\'' +
+                ", rtime='" + rtime + '\'' +
+                ", starttime='" + starttime + '\'' +
+                ", endtime='" + endtime + '\'' +
+                '}';
+    }
 }

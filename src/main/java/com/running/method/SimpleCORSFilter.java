@@ -1,11 +1,14 @@
 package com.running.method;
 
+import org.springframework.context.annotation.Configuration;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 //跨域
+@Configuration
 public class SimpleCORSFilter implements Filter {
     private boolean isCross = false;
 

@@ -7,7 +7,7 @@
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!-- 生成文件时不生成注释 -->
         <commentGenerator>
-            <property name="suppressAllComments" value="true" />
+            <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!-- jdbcConnection：指定如何连接到目标数据库 -->
         <jdbcConnection
@@ -18,29 +18,30 @@
         </jdbcConnection>
         <!--Java类型解析器 -->
         <javaTypeResolver>
-            <property name="forceBigDecimals" value="false" />
+            <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- javaModelGenerator：指定javaBean的生成策略 targetPackage="test.model"：目标包名
             targetProject="\MBGTestProject\src"：目标工程 -->
         <javaModelGenerator
                 targetPackage="com.running.bean"
                 targetProject=".\src\main\java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <!-- sqlMapGenerator：sql映射生成策略： -->
         <sqlMapGenerator targetPackage="mapper"
                          targetProject=".\src\main\resources">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- javaClientGenerator:指定mapper接口所在的位置 -->
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="com.running.dao" targetProject=".\src\main\java">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 指定要逆向分析哪些表：根据表要创建javaBean -->
-        <table tableName="r_rule" domainObjectName="RuleBean"></table>
+        <table tableName="r_version" domainObjectName="VersionBean"></table>
         <!--
+        <table tableName="r_rule" domainObjectName="RuleBean"></table>
         <table tableName="r_admin" domainObjectName="AdminBean"></table>
         <table tableName="r_classes" domainObjectName="ClassesBean"></table>
         <table tableName="r_college" domainObjectName="CollegeBean"></table>

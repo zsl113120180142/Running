@@ -2,6 +2,7 @@ package com.running.dao;
 
 import com.running.bean.AdminBean;
 import com.running.bean.AdminBeanExample;
+
 import java.util.List;
 import java.util.Map;
 

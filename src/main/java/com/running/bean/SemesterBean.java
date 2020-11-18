@@ -1,9 +1,21 @@
 package com.running.bean;
 
+import java.util.List;
+
 public class SemesterBean {
     private Integer seid;
 
     private String sename;
+
+    private List<WeekBean> weekBeanList;
+
+    public List<WeekBean> getWeekBeanList() {
+        return weekBeanList;
+    }
+
+    public void setWeekBeanList(List<WeekBean> weekBeanList) {
+        this.weekBeanList = weekBeanList;
+    }
 
     public Integer getSeid() {
         return seid;
@@ -26,6 +38,7 @@ public class SemesterBean {
         return "SemesterBean{" +
                 "seid=" + seid +
                 ", sename='" + sename + '\'' +
+                ", weekBeanList=" + weekBeanList +
                 '}';
     }
 }

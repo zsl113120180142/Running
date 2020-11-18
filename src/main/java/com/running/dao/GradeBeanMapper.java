@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.GradeBean;
 import com.running.bean.GradeBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface GradeBeanMapper {

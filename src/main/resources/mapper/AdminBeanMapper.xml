@@ -73,8 +73,8 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    aid, username, password, phone, apicture, aname, iden, works
-  </sql>
+        aid, username, password, phone, apicture, aname, iden, works
+    </sql>
     <!--模糊查询-->
     <select id="searchaname" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -88,10 +88,10 @@
     </select>
     <!--找回密码-->
     <select id="selectPassword" parameterType="java.lang.String" resultType="java.lang.String">
-     SELECT password
-     FROM r_admin
-     WHERE username=#{username} and phone=#{phone}
-  </select>
+        SELECT password
+        FROM r_admin
+        WHERE username=#{username} and phone=#{phone}
+    </select>
     <!--登录验证-->
     <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -121,9 +121,9 @@
         where aid = #{aid,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from r_admin
-    where aid = #{aid,jdbcType=INTEGER}
-  </delete>
+        delete from r_admin
+        where aid = #{aid,jdbcType=INTEGER}
+    </delete>
     <delete id="deleteByExample" parameterType="com.running.bean.AdminBeanExample">
         delete from r_admin
         <if test="_parameter != null">
@@ -131,13 +131,13 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.running.bean.AdminBean">
-    insert into r_admin (aid, username, password, 
-      phone, apicture, aname, 
-      iden, works)
-    values (#{aid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{apicture,jdbcType=VARCHAR}, #{aname,jdbcType=VARCHAR}, 
-      #{iden,jdbcType=VARCHAR}, #{works,jdbcType=INTEGER})
-  </insert>
+        insert into r_admin (aid, username, password,
+        phone, apicture, aname,
+        iden, works)
+        values (#{aid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR}, #{apicture,jdbcType=VARCHAR}, #{aname,jdbcType=VARCHAR},
+        #{iden,jdbcType=VARCHAR}, #{works,jdbcType=INTEGER})
+    </insert>
     <insert id="insertSelective" parameterType="com.running.bean.AdminBean">
         insert into r_admin
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -273,14 +273,14 @@
         where aid = #{aid,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.running.bean.AdminBean">
-    update r_admin
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      apicture = #{apicture,jdbcType=VARCHAR},
-      aname = #{aname,jdbcType=VARCHAR},
-      iden = #{iden,jdbcType=VARCHAR},
-      works = #{works,jdbcType=INTEGER}
-    where aid = #{aid,jdbcType=INTEGER}
-  </update>
+        update r_admin
+        set username = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        apicture = #{apicture,jdbcType=VARCHAR},
+        aname = #{aname,jdbcType=VARCHAR},
+        iden = #{iden,jdbcType=VARCHAR},
+        works = #{works,jdbcType=INTEGER}
+        where aid = #{aid,jdbcType=INTEGER}
+    </update>
 </mapper>

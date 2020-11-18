@@ -5,11 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.running.bean.AdminBean;
 import com.running.bean.Msg;
-import com.running.bean.StudentBean;
 import com.running.service.LoginService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,9 @@ import java.util.List;
  * 后台
  * 处理用户发来的登录请求
  */
-@Controller
+@Api(tags ="后台登录页面，以及管理员操作")
+@RequestMapping("/login")
+@RestController
 public class LoginController {
 
     @Autowired
@@ -28,11 +31,13 @@ public class LoginController {
     /**
      * admin模糊查询（通过姓名）
      */
-    @ResponseBody
+    @ApiOperation("通过姓名对管理员进行模糊查询")
     @GetMapping("/searchAname")
-    public Msg Adminsearch(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
-                           @RequestParam(value = "aname") String aname) {
-        PageHelper.startPage(pn, 10);
+    public Msg Adminsearch(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                           @RequestParam(value = "aname",defaultValue = "0") String aname) {
+
+        PageHelper.startPage(pageNum, pageSize);
         List<AdminBean> adminBeans = loginService.searchaname(aname);
         PageInfo page = new PageInfo(adminBeans, 10);
         return Msg.success().add("searchadmin", page);
@@ -42,13 +47,14 @@ public class LoginController {
      * 显示管理员信息
      * 数据丢失一般与bean方法中的get和set方法有关
      */
-    @ResponseBody
+    @ApiOperation("显示管理员的全部信息")
     @GetMapping("/Admins")
-    public Msg Admins(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
+    public Msg Admins(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         // 这不是一个分页查询
         // 引入PageHelper分页插件
         // 在查询之前只需要调用，传入页码，以及每页的大小
-        PageHelper.startPage(pn, 10);
+        PageHelper.startPage(pageNum, pageSize);
         // startPage后面紧跟的这个查询就是一个分页查询
         List<AdminBean> adminBeans = loginService.admins();
         // 使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了。
@@ -63,9 +69,9 @@ public class LoginController {
      * 批量删除：1-2-3
      * 单个删除：1
      */
-    @ResponseBody
-    @RequestMapping(value = "/deleteAdmin", method = RequestMethod.DELETE)
-    public Msg deleteAdmin(@PathVariable("aids") String aids) {
+    @ApiOperation("删除管理员,单个批量二合一,批量删除：1-2-3")
+    @DeleteMapping( "/deleteAdmin")
+    public Msg deleteAdmin(@RequestParam("aids") String aids) {
         //批量删除
         if (aids.contains("-")) {
             List<Integer> del_aids = new ArrayList<>();
@@ -85,30 +91,38 @@ public class LoginController {
     }
 
     /**
-     * 修改管理员
+     * 修改密码
      */
-    @ResponseBody
-    @RequestMapping(value = "/updateAdmin", method = RequestMethod.PUT)
-    public Msg UpdateAdmin(AdminBean adminBean) {
-        loginService.updateAdmin(adminBean);
-        return Msg.success();
+    @ApiOperation("修改密码")
+    @PutMapping("/updatePassword")
+    public Msg updatePassword(@RequestParam("aid") Integer aid,
+                              @RequestParam("oldpassword") String oldpassword,
+                              @RequestParam("newpassword") String newpassword) {
+        Msg msg = loginService.updatePassword(aid,oldpassword,newpassword);
+        return msg;
     }
 
 
     /**
      * 新增管理员
      */
-    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
-    @ResponseBody
-    public Msg AddAdmin(AdminBean adminBean) {
-        loginService.addAdmin(adminBean);
+    @ApiOperation("新增管理员")
+    @PostMapping("/addAdmin")
+    public Msg AddAdmin(@RequestBody AdminBean adminBean) {
+        boolean num =loginService.addAdmin(adminBean);
+        ModelAndView mav=new ModelAndView();
+        if(num) {
+            mav.setViewName("login");
+        }else {
+            mav.setViewName("register");
+        }
         return Msg.success();
     }
 
     /**
      * 找回密码
      */
-    @ResponseBody
+    @ApiOperation("找回密码")
     @GetMapping("/GetPassword")
     public Msg GetPassword(
             @RequestParam(value = "username") String username,
@@ -119,34 +133,105 @@ public class LoginController {
         if (password != null && password != "") {
             return Msg.success().add("password", password);
         } else {
-            return Msg.fail().add("password", password);
+            return Msg.fail().add("err","密码不存在");
         }
 
     }
 
     /**
+     * 修改管理员
+     */
+    @ApiOperation("修改管理员")
+    @PutMapping("/updateAdmin")
+    public Msg UpdateAdmin(@RequestBody AdminBean adminBean) {
+        loginService.updateAdmin(adminBean);
+        return Msg.success();
+    }
+
+
+    /**
      * 登录：验证用户名和密码是否正确
      * 并在返回时返回taken
      */
-    @ResponseBody
-    @GetMapping("/DoLogin")
+    @ApiOperation("登录")
+    @PostMapping("/DoLogin")
     public Msg DoLogin(
             @RequestParam(value = "username") String username,
-            @RequestParam(value = "password") String password) {
+            @RequestParam(value = "password") String password
+            //HttpServletRequest req
+            ) {
+       /* ModelAndView mav = new ModelAndView();
+        mav.setViewName("login");
+        if (LoginMap.isExist(username)) {
+            System.out.println(username + "已登陆...");
+            mav.setViewName("logined");
+            mav.addObject("username", username);
+        } else {*/
+            //数据库用户名重复校验
+            boolean b = loginService.checkUser(username);
+            if (b) {
+                AdminBean login = loginService.DoLogin(username);
+                String pass = login.getPassword();
+                if (pass.equals(password) && login.getWorks() == true) {
+                    /*
+                    req.getSession().setAttribute("logined", username);
+                    LoginMap.setMess(username, req.getSession());
+                    System.out.println(LoginMap.getMessHttpSession(username).getAttribute("logined"));
+                    mav.setViewName("success");
+                    mav.addObject("username", username);*/
+                    return Msg.doLogin().add("login", login);
+                } else {
+                    //mav.setViewName("register");
+                    return Msg.fail().add("err", "密码错误");
 
-        //数据库用户名重复校验
-        boolean b = loginService.checkUser(username);
-        if (b) {
-            AdminBean login = loginService.DoLogin(username);
-            String pass = login.getPassword();
-            if (pass.equals(password) && login.getWorks() == true) {
-                return Msg.doLogin().add("login", login);
+                }
             } else {
-                return Msg.fail().add("error", "密码错误");
+               // mav.setViewName("register");
+                return Msg.fail().add("err", "账号错误");
             }
-        } else {
-            return Msg.fail().add("error", "账号错误");
+        }
+       /* return Msg.fail().add("err", "该账号已在其他地方登录");
+    }*/
+
+
+
+
+
+
+    /**
+     * 退出时调用
+     * @param req
+     * @return
+     */
+    /*
+    @ApiOperation("退出时调用")
+    @GetMapping("/quit")
+    public String quit(HttpServletRequest req) {
+
+        if(req.getSession(false).getAttribute("logined")!=null) {
+            String username = (String)req.getSession(false).getAttribute("logined");
+            LoginMap.remove(username);
+            req.getSession(false).invalidate();
+            return "invaliate successful...";
+        }else {
+            return "this session not found...";
         }
 
-    }
+    }*/
+
+    /**
+     * 登录成功触发
+     * @param username
+     * @return
+     */
+    /*
+    @ApiOperation("登录成功触发")
+    @GetMapping("/writeToSession")
+    public String testSession(@RequestParam("username") String username) {
+        System.out.println(username);
+        LoginMap.getMessHttpSession(username).setAttribute("writed", "my word...");
+        return (String)LoginMap.getMessHttpSession(username).getAttribute("writed");
+    }*/
+
+
 }

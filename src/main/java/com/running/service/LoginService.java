@@ -2,12 +2,14 @@ package com.running.service;
 
 import com.running.bean.AdminBean;
 import com.running.bean.AdminBeanExample;
-import com.running.bean.StudentBean;
+import com.running.bean.Msg;
 import com.running.dao.AdminBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理登录的事件
@@ -49,8 +51,8 @@ public class LoginService {
      *
      * @param adminBean
      */
-    public void addAdmin(AdminBean adminBean) {
-        adminBeanMapper.insertSelective(adminBean);
+    public boolean addAdmin(AdminBean adminBean) {
+       return adminBeanMapper.insertSelective(adminBean)==1;
     }
 
     /**
@@ -63,9 +65,9 @@ public class LoginService {
     }
 
 
-
     /**
-     *显示管理员信息
+     * 显示管理员信息
+     *
      * @return
      */
     public List<AdminBean> admins() {
@@ -74,6 +76,7 @@ public class LoginService {
 
     /**
      * 单个删除
+     *
      * @param aid
      */
     public void deleteAdmin(Integer aid) {
@@ -82,6 +85,7 @@ public class LoginService {
 
     /**
      * 批量删除
+     *
      * @param del_aids
      */
     public void deleteBatch(List<Integer> del_aids) {
@@ -95,6 +99,7 @@ public class LoginService {
     /**
      * 检查用户名是否存在
      * true：代表当前姓名存在   fasle：不存在
+     *
      * @param username
      * @return
      */
@@ -103,11 +108,26 @@ public class LoginService {
         AdminBeanExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
         long count = adminBeanMapper.countByExample(example);
-        return count==1;
+        return count == 1;
     }
 
 
     public List<AdminBean> searchaname(String aname) {
-        return adminBeanMapper.searchaname(aname);
+        if (aname.equals("0")){
+            return adminBeanMapper.selectByExample(null);
+        }else {
+            return adminBeanMapper.searchaname(aname);
+        }
+    }
+
+    public Msg updatePassword(Integer aid, String oldpassword, String newpassword) {
+        AdminBean adminBean = adminBeanMapper.selectByPrimaryKey(aid);
+        if (oldpassword.equals(adminBean.getPassword())){
+            adminBean.setPassword(newpassword);
+            adminBeanMapper.updateByPrimaryKeySelective(adminBean);
+            return Msg.success();
+        }else {
+            return Msg.fail().add("err","密码错误");
+        }
     }
 }

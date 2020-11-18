@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.CollegeBean;
 import com.running.bean.CollegeBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface CollegeBeanMapper {

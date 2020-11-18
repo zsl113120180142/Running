@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.SemesterBean;
 import com.running.bean.SemesterBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface SemesterBeanMapper {

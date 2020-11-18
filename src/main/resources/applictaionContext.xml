@@ -3,7 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+">
 
     <!-- spring的配置文件，主要配置和业务逻辑有关的内容 -->
     <!-- SpringMVC的配置文件，包含网站的跳转逻辑的控制，配置-->
@@ -11,6 +19,7 @@
         <!-- 除了控制器（Controller），其他都扫描，因为控制器已经在springmvc中扫描过了-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
     <!-- =================== 配置数据源 =================== -->
     <!-- 在main的resource文件夹中创建dbconfig.properties -->
     <context:property-placeholder location="classpath:dbconfig.properties"/>
@@ -63,4 +72,12 @@
         </tx:attributes>
     </tx:advice>
     <!-- 核心：数据源，与mybatis的整合，事务 -->
+    <!--添加文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="5242440"></property>    <!--设置最大支持的上传文件大小 B-->
+    </bean>
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:resource/*.properties"/>
+
 </beans>

@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.ClassesBean;
 import com.running.bean.ClassesBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ClassesBeanMapper {

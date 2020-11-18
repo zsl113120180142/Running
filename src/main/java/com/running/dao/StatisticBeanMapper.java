@@ -2,10 +2,8 @@ package com.running.dao;
 
 import com.running.bean.StatisticBean;
 import com.running.bean.StatisticBeanExample;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.HashMap;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface StatisticBeanMapper {
     long countByExample(StatisticBeanExample example);
@@ -29,8 +27,4 @@ public interface StatisticBeanMapper {
     int updateByPrimaryKeySelective(StatisticBean record);
 
     int updateByPrimaryKey(StatisticBean record);
-
-    List<StatisticBean> selectByWid(Integer wid);
-
-    long countByExampleandsex(HashMap<Object, Object> map);
 }

@@ -2,7 +2,9 @@ package com.running.dao;
 
 import com.running.bean.WeekBean;
 import com.running.bean.WeekBeanExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface WeekBeanMapper {

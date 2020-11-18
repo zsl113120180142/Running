@@ -1,5 +1,7 @@
 package com.running.bean;
 
+import java.util.List;
+
 public class GradeBean {
     private Integer gid;
 
@@ -9,7 +11,17 @@ public class GradeBean {
 
     private Integer gdelete;
 
+    private List<ClassesBean> classesBeanList;
+
     private CollegeBean collegeBean;
+
+    public List<ClassesBean> getClassesBeanList() {
+        return classesBeanList;
+    }
+
+    public void setClassesBeanList(List<ClassesBean> classesBeanList) {
+        this.classesBeanList = classesBeanList;
+    }
 
     public CollegeBean getCollegeBean() {
         return collegeBean;
@@ -58,6 +70,7 @@ public class GradeBean {
                 ", cid=" + cid +
                 ", gname=" + gname +
                 ", gdelete=" + gdelete +
+                ", classesBeanList=" + classesBeanList +
                 ", collegeBean=" + collegeBean +
                 '}';
     }
